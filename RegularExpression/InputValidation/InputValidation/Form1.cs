@@ -23,6 +23,16 @@ namespace InputValidation
 
         }
 
+        static string ReformatPhone(string s)
+        {
+            Match m = Regex.Match(s, @"^\(?(\d{3})\)?[\s\-]?(\d{3})\-?(\d{4})$");
+
+            return String.Format("({0}) {1}-{2}",
+                                m.Groups[1],
+                                m.Groups[2],
+                                m.Groups[3]);
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!Regex.IsMatch(txtName.Text, @"^([A-Za-z]*\s*)*$"))
@@ -31,6 +41,8 @@ namespace InputValidation
 
             if (!Regex.IsMatch(txtPhone.Text, @"^((\(\d{3}\)?)|(\d{3}-))?\d{3}-\d{4}$"))
                 MessageBox.Show("The phone number is not a valid US phone number");
+                txtPhone.Text = ReformatPhone(txtPhone.Text);
+
 
             if (!Regex.IsMatch(txtEmail.Text, @"^([a-zA-Z0-9_\-” +
         @”\.]+)@((\[[0-9]{1,3}" +
